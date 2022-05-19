@@ -1,23 +1,39 @@
-import logo from './logo.svg';
+import {useState,useRef, useEffect } from "react"
 import './App.css';
 
 function App() {
+  const [count,setCount] = useState(60)
+
+  const timeId = useRef();
+  const h1Ref = useRef();
+
+  useEffect(() =>{
+    console.log(h1Ref.current)
+  })
+
+  const handleStart = () =>{
+
+    timeId.current && clearInterval(timeId.current)
+
+    timeId.current = setInterval(() =>{
+      setCount(prevState => prevState - 1)
+    },1000)
+  }
+
+  const handleStop = () =>{
+    clearInterval(timeId.current);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1 ref={h1Ref}>{count}</h1>
+      <button 
+      onClick={handleStart}
+      >Start</button>
+
+      <button
+       onClick={handleStop}
+       >Stop</button>
     </div>
   );
 }
