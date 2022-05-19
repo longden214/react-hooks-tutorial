@@ -1,23 +1,53 @@
-import logo from './logo.svg';
+import {useEffect,useState, useMemo, useRef} from "react"
 import './App.css';
 
 function App() {
+  const [name,setName] = useState('');
+  const [price,setPrice] = useState('');
+  const [products,setProduct] = useState([]);
+
+  const nameRef = useRef();
+
+  const handleOnSubmit = () => {
+    setProduct([...products,{
+      name,
+      price: +price
+    }])
+
+    setName('')
+    setPrice('')
+
+    nameRef.current.focus();
+  }
+
+  const total = useMemo(()=>{
+    console.log("Tinh toán...")
+    const result = products.reduce((result,prod)=>{
+      return result+prod.price
+    },0)
+
+    return result
+  },[products])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <input type="text" placeholder="Enter name..."
+      value={name} 
+      ref={nameRef}
+      onChange={e => setName(e.target.value)}/>
+
+      <input type="text" placeholder="Enter price..."
+      value={price} 
+      onChange={e => setPrice(e.target.value)}/>
+
+      <button onClick={handleOnSubmit}>Add New</button>
+
+      <h1><b>Total: </b> {total}</h1>
+      <ul>
+        {products.map((product,index) => (
+          <li key={index}>{product.name}-{product.price}</li>
+        ))}
+      </ul>
     </div>
   );
 }
