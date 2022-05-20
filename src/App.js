@@ -1,24 +1,29 @@
-import logo from './logo.svg';
+import {useContext, useState, createContext} from 'react';
 import './App.css';
+import Context from './Context'
+
+// Các bước tạo Context:
+// B1. Create context
+export const themeContext = createContext();
 
 function App() {
+  const [theme,setTheme] = useState("light");
+
+  const handleThemeChange = () => {
+    setTheme(theme === "light"?"dark":"light")
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    // B2. Provider
+    <themeContext.Provider value={theme}>
+       <div >
+          <button
+          onClick={handleThemeChange} 
+          >Toggle Theme</button>
+          <Context/>
+       </div>
+    </themeContext.Provider>
+   
   );
 }
 
